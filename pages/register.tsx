@@ -3,11 +3,11 @@ import { Layout } from "@/components/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function About() {
+export default function Register() {
   return (
     <>
       <Layout>
-        <h1>About page</h1>
+        <h1>Register Page</h1>
       </Layout>
     </>
   );

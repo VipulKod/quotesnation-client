@@ -69,7 +69,7 @@ export default function Register() {
               </div>
               
 
-              <Button onClick={handleClick} className="px-2 my-2">
+              <Button onClick={handleClick} className="px-2 my-2" disabled={false}>
                 <AiOutlineLogin /> <p className="px-1">Sign In</p>
               </Button>
             </div>

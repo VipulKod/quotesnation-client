@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Input = ({ label, type, placeholder, value, onChange, icon }) => {
+export const Input = ({ label, type, placeholder, value, onChange, icon}) => {
   return (
     <div className="flex flex-col my-3">
       <label htmlFor={label} className="font-semibold mb-1">

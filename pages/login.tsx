@@ -5,14 +5,20 @@ import { useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
 import { BsKey } from "react-icons/bs";
 import { Button } from "@/components/ui/button/Button";
-import { AiOutlineLogin, AiOutlineMail } from "react-icons/ai";
+import { AiOutlineLogin } from "react-icons/ai";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { ErrorNotification } from "@/components/ui/error_notif/ErrorNotification";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Login() {
+  const apiUrl = process.env.API_URL;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -22,12 +28,37 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {
-    console.log(username, password);
+  const callAPI = async () => {
+    if (username && password) {
+      try {
+        let response = await axios.post(`${apiUrl}/auth/login`, {
+          username,
+          password,
+        });
+        localStorage.setItem("token", response?.data?.token);
+        localStorage.setItem("userId", response?.data?.userId);
+        localStorage.setItem("username", response?.data?.username);
+        localStorage.setItem("email", response?.data?.email);
+        router.push("/");
+      } catch (err) {
+        console.log(err);
+        setErrorMsg(err.response.data.message);
+      }
+    }
+  };
+
+  const clearError = () => {
+    setErrorMsg("");
   };
 
   return (
     <>
+      {errorMsg && (
+        <ErrorNotification
+          errorMessage={errorMsg}
+          handleNotificationClose={clearError}
+        />
+      )}
       <div className="h-screen flex justify-center items-center">
         <div className="grid grid-cols-2 gap-4 rounded-2xl overflow-hidden shadow-2xl">
           <div className="flex justify-center items-center">
@@ -65,7 +96,7 @@ export default function Login() {
                   </Link>
                 </div>
               </div>
-              <Button onClick={handleClick} className="px-2 my-2">
+              <Button onClick={callAPI} disabled={false} className="px-2 my-2">
                 <AiOutlineLogin /> <p className="px-1">Sign In</p>
               </Button>
             </div>

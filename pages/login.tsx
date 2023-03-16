@@ -39,7 +39,7 @@ export default function Login() {
         localStorage.setItem("userId", response?.data?.userId);
         localStorage.setItem("username", response?.data?.username);
         localStorage.setItem("email", response?.data?.email);
-        router.push("/");
+        router.push("/dashboard");
       } catch (err) {
         console.log(err);
         setErrorMsg(err.response.data.message);

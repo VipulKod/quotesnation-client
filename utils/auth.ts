@@ -1,4 +1,7 @@
 export default function isAuthenticated() {
-  const token = localStorage.getItem("token");
-  return token;
+  if (typeof window !== 'undefined') {
+    const token = localStorage?.getItem("token") ?? null;
+    return token;
+  }
+  return null;
 }

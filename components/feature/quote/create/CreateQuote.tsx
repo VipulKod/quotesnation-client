@@ -7,7 +7,7 @@ import { AiOutlineLogin } from "react-icons/ai";
 import axios from "axios";
 import { SuccessNotification } from "@/components/ui/success_notif/SuccessNotification";
 
-const Quote = () => {
+const CreateQuote = () => {
   const maxCharCount = 200;
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
@@ -143,4 +143,4 @@ const Quote = () => {
   );
 };
 
-export default Quote;
+export default CreateQuote;

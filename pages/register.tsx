@@ -7,10 +7,13 @@ import { BsKey } from "react-icons/bs";
 import { Button } from "@/components/ui/button/Button";
 import { AiOutlineLogin, AiOutlineMail } from "react-icons/ai";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Register() {
+  const apiUrl = process.env.API_URL;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,8 +30,35 @@ export default function Register() {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {
-    console.log(username, password);
+  const router = useRouter();
+
+  const handleClick = async () => {
+    if (username && password) {
+      try {
+        let response = await axios.post(
+          `${apiUrl}/users`,
+          {
+            email,
+            username,
+            password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + "token",
+            },
+          }
+        );
+        router.push("/login");
+      } catch (err) {
+        console.log(err);
+        if (err?.response) {
+          setErrorMsg(err?.response?.data?.message);
+        } else {
+          setErrorMsg(err.message);
+        }
+      }
+    }
   };
 
   return (
@@ -64,12 +94,17 @@ export default function Register() {
               />
 
               <div className="flex">
-              <p>Already have an account?&nbsp;</p>
-              <Link className="text-blue-600" href="/login">Sign In</Link>
+                <p>Already have an account?&nbsp;</p>
+                <Link className="text-blue-600" href="/login">
+                  Sign In
+                </Link>
               </div>
-              
 
-              <Button onClick={handleClick} className="px-2 my-2" disabled={false}>
+              <Button
+                onClick={handleClick}
+                className="px-2 my-2"
+                disabled={false}
+              >
                 <AiOutlineLogin /> <p className="px-1">Sign In</p>
               </Button>
             </div>
@@ -87,4 +122,7 @@ export default function Register() {
       </div>
     </>
   );
+}
+function setErrorMsg(message: any) {
+  throw new Error("Function not implemented.");
 }

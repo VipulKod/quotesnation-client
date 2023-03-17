@@ -31,10 +31,19 @@ export default function Login() {
   const callAPI = async () => {
     if (username && password) {
       try {
-        let response = await axios.post(`${apiUrl}/auth/login`, {
-          username,
-          password,
-        });
+        let response = await axios.post(
+          `${apiUrl}/auth/login`,
+          {
+            username,
+            password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + "token",
+            },
+          }
+        );
         localStorage.setItem("token", response?.data?.token);
         localStorage.setItem("userId", response?.data?.userId);
         localStorage.setItem("username", response?.data?.username);
@@ -42,7 +51,11 @@ export default function Login() {
         router.push("/dashboard");
       } catch (err) {
         console.log(err);
-        setErrorMsg(err.response.data.message);
+        if (err?.response) {
+          setErrorMsg(err?.response?.data?.message);
+        } else {
+          setErrorMsg(err.message);
+        }
       }
     }
   };

@@ -30,6 +30,28 @@ export default function Register() {
     setPassword(e.target.value);
   };
 
+  const sendHello = async () => {
+    try {
+      let response = await axios.post(
+        `${apiUrl}/`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Response");
+    } catch (err) {
+      console.log(err);
+      if (err?.response) {
+        setErrorMsg(err?.response?.data?.message);
+      } else {
+        setErrorMsg(err.message);
+      }
+    }
+  };
+
   const router = useRouter();
 
   const handleClick = async () => {
@@ -106,6 +128,14 @@ export default function Register() {
                 disabled={false}
               >
                 <AiOutlineLogin /> <p className="px-1">Sign In</p>
+              </Button>
+
+              <Button
+                onClick={sendHello}
+                className="px-2 my-2"
+                disabled={false}
+              >
+                <AiOutlineLogin /> <p className="px-1">Post hello</p>
               </Button>
             </div>
           </div>

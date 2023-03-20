@@ -35,7 +35,7 @@ export default function Register() {
   const handleClick = async () => {
     if (username && password) {
       try {
-        let response = await axios.post(
+        let response = await axios.put(
           `${apiUrl}/users`,
           {
             email,
